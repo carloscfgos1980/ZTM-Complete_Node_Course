@@ -6,18 +6,26 @@
 
 https://academy.zerotomastery.io/courses/1206554/lectures/31987559
 
-N: Concepts of testing. API test in Nodejs.
+- Automatic test for our API. There are 3 level of testing:
+
+<Unit test> Test a piece of code in aisolation
+<GUI Test> End to end GUI test when you test your application by interacting with the User, and make request to your APi depending what that User click in the interface.
+<API Layer test>. This is what we will be implementing. We test request coming in going thru all our middleware, be process by our request handler and be sent back as a response. This sometimes are called <integration test> because they test ho w many units (components) work all together when connected into your API, into an endpoint, for example.
+
+- Check <testing pyramid> diagram
 
 # Lesson 2. Testing APIs with Jest
 
 https://academy.zerotomastery.io/courses/1206554/lectures/31987560
 
-- Package Jest includes:
+**Testing in Node**:
 
-* <Test runner>. Finds all the test in your project
-* <Test fixtures>. How your test is organize by module and by individual test
-* <Assertions>. functions that we expect a determine result
-* <Mocking>. Mocking the database we we dont create new data while testing.
+- <Test runner>. Finds all the test in your project, runs thru them and give you the results.
+- <Test fixtures>. How your test is organize by module and by individual test. Where each fixture can run in its own environment and its own set of variables.
+- <Assertions>. functions that we expect a determine result.
+- <Mocking>. Mocking the database we we don't create new data while testing.
+
+* Jest is worldwile use npm package for testing and includes for feature from above!
 
 1. Install Jest npm package for testing. It is a development dependency coz we use the test during development, we dont need to test out test during production
 
@@ -34,6 +42,11 @@ npm install jest --save-dev
 
 4. write scrip in root package.json to run test in client and server:
    "test": "npm test --prefix server && npm test --prefix client"
+
+- there 2 approaches how to build the file and folders for testing:
+
+1. Create a folder name **test** that will contain all the codes for our application
+2. Create a file alongside the codes we want to test, for example, we can name it <launches.test.js> or <launches.spec.js>. Jest will recognize both format. In our application we keep out testing alongside the codes we are testing!
 
 N: Website documentation for testing (jest):
 https://jestjs.io
@@ -63,7 +76,7 @@ N: Using <supertest> libray (package) to make it easy to do the HTTP request
    });
    });
 
-N: I have a bug when testing GET and trying to validate 'Content-Type', /json/.
+N: I had a bug when testing GET and trying to validate 'Content-Type' nevertheless, now it just worked!
 
 # Lesson 4. Testing APIs endpoints with supertest. POST
 
@@ -126,6 +139,8 @@ launchDate: 'January 4, 2028',
 
         expect(response.body).toMatchObject(launchDataWithoutDate);
 
+- This assertion: toMatchObject is used to match a subset of property in the object. In this case we use to check all the properties in the request match except the Date which has to be treated in a different way
+
 # Lesson 5. Testing APIs endpoints with supertest. POST error cases
 
 https://academy.zerotomastery.io/courses/1206554/lectures/
@@ -158,6 +173,8 @@ expect(response.body).toStrictEqual({
 error: 'Missing required launch property',
 });
 
+- We pass to supertest (request) the set object missing the Date (launchDataWithoutDate) and as assertion we use <toStrictEqual> this will expect an error which has to matcht the error json object we worte in our controller when this case occurs
+
 3.  Test for invalid date
 
         test('It should catch invalid dates',async ()=>{
@@ -174,6 +191,12 @@ error: 'Missing required launch property',
 
     });
 
-N: Same as above for the the case of invalid date
+N: Same as above for the the case of invalid date. Testing dates is a pain in the ass!
 
-- Testing dates is a pain in the ass
+# Resume
+
+- Testing in Node. Concepts. 3 different levels of testing (from top to botton): GUI Test, API Layer test, Unit test
+- Testing APIs with Jest: test runner, test fixture, assertion and mocking (not implemented yet)
+- Testing APIs endpoints with supertest. Get
+- Testing APIs endpoints with supertest. POST. Testing Date
+- Lesson 5. Testing APIs endpoints with supertest. POST error cases (missing element in the request and giving wrong data as Date)
