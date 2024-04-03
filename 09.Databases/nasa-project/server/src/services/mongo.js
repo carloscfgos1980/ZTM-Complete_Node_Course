@@ -8,6 +8,7 @@ const MONGO_URL = process.env.MONGO_URL;
 mongoose.connection.once('open', ()=>{
     console.log('Mongo Connection ready!');
 });
+
 mongoose.connection.on('error', (err)=>{
     console.log(err);
 });
